@@ -1,0 +1,31 @@
+第6周：
+   使用ClassLoader去加载一个类，当需要更新一个类时，只要新建一个ClassLoader再去加载一下
+
+第8周：
+   第一题OOM的原因是String的内存泄漏，需要注意的是，这些占用很大空间的String的实际值是什么。
+   如果一个String占用了100个字节，但是这个String的实际值是"a"一个字符，那么其他98个字节就有可能是泄漏。
+
+   第二题可以引用JAVA_HOME下的org-netbeans-lib-profiler.jar和org-netbeans-modules-profiler-oql.jar（自己找找）
+   然后通过Java编写代码类似像这样：
+        OQLEngine engine;
+        final List<Long> creationTimes=new ArrayList<Long>(10000);
+        engine=new OQLEngine(HeapFactory.createHeap(new File(dumpFilePath)));
+        String query="select s.creationTime from org.apache.catalina.session.StandardSession s";
+        engine.executeQuery(query, new OQLEngine.ObjectVisitor(){
+            public boolean visit(Object obj){
+                creationTimes.add((Long)obj);
+                return false;
+            }
+        });
+    拿到所有的数据后，统计只是代码问题
+
+第9周：
+   这里的无锁是要保证线程安全的。需要用CAS操作。
+   有锁的时候，要注意锁加在哪个对象上。
+
+第10周：
+   理解Class文件格式后，进行文件解析，这个单纯是文件操作
+
+第11周:
+   可以先使用javap得到字节码，然后用ASM再一个一个抄下来
+
